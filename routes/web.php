@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,5 +17,16 @@ use Inertia\Inertia;
 
 
 Route::get('/', function(){
-  return Inertia::render('Home',['test'=>'tessst']);
+    return Inertia::render('Home',['test'=>'tessst']);
 });
+
+// Route::prefix('articles')->group(function () {
+//     Route::get('/',function(){
+//         return Inertia::render('Articles/Index');
+//     });
+//     Route::get('/editor', function () {
+//         return Inertia::render('Articles/Editor');
+//     });
+// });
+
+Route::resource('articles', ArticleController::class);
