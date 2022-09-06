@@ -10,8 +10,9 @@ module.exports = {
         },
         colors: {
           'ov-white': '#eef1f7',
-          'main':'#f23276',
-          'second':'#195cc5',
+          'main':'#000c26',
+          'second':'#5c9ee4',
+          'coffee':'#fdf0d5',
           'x-blue':'#273044',
         }
       },

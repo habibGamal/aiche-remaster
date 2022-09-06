@@ -6,7 +6,7 @@ import React from 'react'
 export default function Layout(props: { children: JSX.Element }) {
     return (
         <>
-            <nav className="bg-indigo-900">
+            <nav className="bg-main">
                 <div className="container">
                     <div className="flex justify-between items-center">
                         <h1 className="text-2xl text-white">Logo</h1>
