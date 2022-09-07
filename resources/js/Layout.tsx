@@ -2,14 +2,15 @@ import { Link } from '@inertiajs/inertia-react'
 import { Menu } from 'antd'
 import { ReadOutlined, EditOutlined, DatabaseOutlined, LoginOutlined } from '@ant-design/icons';
 import React from 'react'
+import { LOGO_IMAGES_PATH } from './AppConfig';
 
 export default function Layout(props: { children: JSX.Element }) {
     return (
         <>
-            <nav className="bg-main">
+            <nav className="bg-main sticky top-0 py-2 z-50 shadow-lg">
                 <div className="container">
                     <div className="flex justify-between items-center">
-                        <h1 className="text-2xl text-white">Logo</h1>
+                        <img className="w-[50px] aspect-square" src={LOGO_IMAGES_PATH + 'aiche_logo_black.png'} alt="" />
                         <Menu mode="horizontal" className='!bg-transparent !text-white' >
                             <Menu.SubMenu key="SubMenu" title="Articles" icon={<ReadOutlined />}>
                                 <Menu.Item key="2" icon={<EditOutlined />}>

@@ -13,7 +13,7 @@ export default function Slider() {
         <Carousel autoplay>
             {
                 homeSliderImages.map(
-                    imageSrc => <SliderItem src={SLIDER_IMAGES_PATH + imageSrc} />
+                    (imageSrc,i) => <SliderItem key={i} src={SLIDER_IMAGES_PATH + imageSrc} />
                 )
             }
         </Carousel>
