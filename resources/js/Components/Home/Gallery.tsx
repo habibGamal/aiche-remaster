@@ -1,75 +1,52 @@
-import { Image, Tabs } from 'antd'
+import { faAdd, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Inertia } from '@inertiajs/inertia';
+import { Button, Image, Tabs } from 'antd'
 import React, { useMemo } from 'react'
-import { achieveImages, careerkImages, openingImages } from '../../AppConfig';
+import { achieveImages, careerkImages, openingImages } from '../../Config';
+import useModalProps from '../../Hooks/useModalProps';
+import { EventImages } from '../../Models/EventImages';
+import AddEventImage from '../Modals/AddEventImage';
+import GalleryEvent from './GalleryEvent';
 
-export default function Gallery() {
-
-    const openning = useMemo(() =>
-        Array.from(Array(17).keys()).map(
-            index =>
-                <Image
-                    key={index}
-                    className="inline"
-                    src={openingImages('open2019', (index + 1).toString())}
-                />
-        ), []);
-    const careerk = useMemo(() =>
-        Array.from(Array(5).keys()).map(
-            index =>
-                <Image
-                    key={index}
-                    className="inline"
-                    src={careerkImages('careerk', (index + 1).toString())}
-                />
-        ), []);
-    const achieve = useMemo(() =>
-        Array.from(Array(3).keys()).map(
-            index =>
-                <Image
-                    key={index}
-                    className="inline"
-                    src={achieveImages((index + 1).toString())}
-                />
-        ), []);
+export default function Gallery({ eventImages }: { eventImages: EventImages[] }) {
+    const addEventImageModal = useModalProps();
     return (
         <section className="p-4 bg-main gallery">
-            <Tabs>
+            <AddEventImage {...addEventImageModal.modalProps} />
+            <Tabs
+                tabBarExtraContent={
+                    <Button onClick={() => addEventImageModal.open()} type="primary">Add Event</Button>
+                }
+            >
                 <Tabs.TabPane tab="All" key="item-1">
-                    <Image.PreviewGroup>
+                    <Image.PreviewGroup >
                         <div className="grid grid-cols-1 md:grid-cols-4">
                             {
-                                [...openning, ...careerk, ...achieve]
+                                eventImages.map(
+                                    event => (
+                                        event.eventImages.map(
+                                            image =>
+                                                <Image
+                                                    key={event.eventName + image.name}
+                                                    className="inline"
+                                                    src={image.path}
+                                                />
+                                        )
+                                    )
+                                )
                             }
                         </div>
                     </Image.PreviewGroup>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Opening" key="item-2">
-                    <Image.PreviewGroup>
-                        <div className="grid grid-cols-1 md:grid-cols-4">
-                            {
-                                [...openning]
-                            }
-                        </div>
-                    </Image.PreviewGroup>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="Achieve" key="item-3">
-                    <Image.PreviewGroup>
-                        <div className="grid grid-cols-1 md:grid-cols-4">
-                            {
-                                [...achieve]
-                            }
-                        </div>
-                    </Image.PreviewGroup>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="Careerk" key="item-4">
-                    <Image.PreviewGroup>
-                        <div className="grid grid-cols-1 md:grid-cols-4">
-                            {
-                                [...careerk]
-                            }
-                        </div>
-                    </Image.PreviewGroup>
-                </Tabs.TabPane>
+                {
+                    eventImages.map(
+                        event =>
+                            <Tabs.TabPane tab={event.eventName} key={event.id}>
+                                <GalleryEvent key={event.id} event={event} />
+                            </Tabs.TabPane>
+                    )
+                }
             </Tabs>
         </section>
     )

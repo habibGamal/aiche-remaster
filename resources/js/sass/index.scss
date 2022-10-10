@@ -66,9 +66,39 @@ span.header-highlight {
 }
 
 .anticon {
-    vertical-align: baseline!important;
+    vertical-align: baseline !important;
 }
 
 .gallery .ant-tabs-tab-btn {
     @apply text-white;
+}
+.gallery .ant-image {
+    height: 100%;
+    > img {
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.article-category {
+    h4 {
+        transition: padding 300ms ease-in-out;
+    }
+    .cover {
+        overflow: hidden;
+    }
+    .cover img {
+        transition: scale 300ms ease-in-out;
+    }
+    &:hover {
+        h4 {
+            padding-left: 1rem;
+        }
+        .cover img {
+            scale: 1.05;
+        }
+    }
+    .actions > * {
+        color: #323a45;
+    }
 }

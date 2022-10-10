@@ -50,7 +50,7 @@ export default function Facts() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
                     {
                         facts.map(
-                            (fact, i) =><Fact fact={fact}/>
+                            (fact, i) =><Fact key={i} fact={fact}/>
                         )
                     }
                 </div>

@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCode, faPerson, faGlobe, faHandshake, faChevronRight, faLightbulb, faAddressBook, faMicrophone, faBook } from '@fortawesome/free-solid-svg-icons';
 import { faAndroid, faFreeCodeCamp } from '@fortawesome/free-brands-svg-icons';
 import Committee from './Committee';
-export default function Committees() {
+import { Committe } from '../../Models/Committe';
+export default function Committees({ committes }: { committes: Committe[] }) {
     const committees = [
         {
             icon: faCode,
@@ -137,10 +138,15 @@ export default function Committees() {
                 <h2 className="section-title">Our  <span className="header-highlight">Committees</span></h2>
                 <div className="columns-1 md:columns-2 lg:columns-3 justify-evenly">
                     {
+                        committes.map((committe, i) =>
+                            <Committee key={i} committee={committe} />
+                        )
+                    }
+                    {/* {
                         committees.map((committee, i) =>
                             <Committee key={i} committee={committee} />
                         )
-                    }
+                    } */}
                 </div>
             </div>
         </section>

@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/inertia-react'
 import { Card } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import React from 'react'
-import { SERVICES_IMAGES_PATH } from '../../AppConfig'
+import { SERVICES_IMAGES_PATH } from '../../Config'
 
 export default function Service({ service }: { service: { name: string, src: string, href: string } }) {
     return (

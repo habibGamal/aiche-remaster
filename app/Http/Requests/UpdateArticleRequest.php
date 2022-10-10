@@ -27,7 +27,8 @@ class UpdateArticleRequest extends FormRequest
             'title' => ['required'],
             'description' => ['required'],
             'cover' => ['nullable', 'image'],
-            'content' => ['required']
+            'content' => ['required'],
+            'category' => ['required' , 'integer']
         ];
     }
 }

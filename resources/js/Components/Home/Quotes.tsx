@@ -1,6 +1,6 @@
 import { Carousel } from 'antd'
 import React from 'react'
-import { BACKGROUNDS_IMAGES_PATH } from '../../AppConfig'
+import { BACKGROUNDS_IMAGES_PATH } from '../../Config'
 import Quote from './Quote'
 
 export default function Quotes() {

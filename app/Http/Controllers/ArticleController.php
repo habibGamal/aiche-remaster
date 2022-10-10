@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
+use App\Models\ArticleCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -16,27 +17,34 @@ class ArticleController extends Controller
      * Display a listing of the resource.
      *
      */
-    public function index()
+    public function index(ArticleCategory $category)
     {
         return Inertia::render('Articles/Index', [
-            'articlesDB' => Article::all()->except('content'),
+            'articlesDB' =>
+            $category
+                ->articles()
+                ->select(['id', 'title', 'cover', 'description', 'category_id'])
+                ->get(),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @return \Inertia\Response
      */
     public function create()
     {
-        return Inertia::render('Articles/Editor');
+        return Inertia::render('Articles/Editor', [
+            'categories' => ArticleCategory::where('type','articles')->select(['id', 'name'])->get(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreArticleRequest $request)
     {
@@ -47,15 +55,17 @@ class ArticleController extends Controller
             'title' => $validated['title'],
             'cover' => $path,
             'description' => $validated['description'],
-            'content' => $validated['content']
+            'content' => $validated['content'],
+            'category_id' => $validated['category'],
         ]);
-        return Redirect::route('articles.index');
+        return Redirect::route('articles.index', ['category' => $validated['category']]);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Article  $article
+     * @return \Inertia\Response
      */
     public function show(Article $article)
     {
@@ -66,11 +76,13 @@ class ArticleController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Article  $article
+     * @return \Inertia\Response
      */
     public function edit(Article $article)
     {
         return Inertia::render('Articles/Editor', [
-            'articleDB' => $article
+            'articleDB' => $article,
+            'categories' => ArticleCategory::where('type','articles')->select(['id', 'name'])->get(),
         ]);
     }
 
@@ -79,6 +91,7 @@ class ArticleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Article  $article
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
@@ -95,9 +108,10 @@ class ArticleController extends Controller
         $article->title = $validated['title'];
         $article->description = $validated['description'];
         $article->content = $validated['content'];
+        $article->category_id = $validated['category'];
         $article->save();
         // return to index page
-        return Redirect::route('articles.index');
+        return Redirect::route('articles.index',['category'=>$validated['category']]);
     }
 
     /**
@@ -105,10 +119,11 @@ class ArticleController extends Controller
      *
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Article $article)
     {
         $article->delete();
-        return Redirect::route('articles.index');
+        return Redirect::route('articles.index', ['category' => $article->category_id]);
     }
 }

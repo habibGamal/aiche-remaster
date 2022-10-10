@@ -27,7 +27,9 @@ class StoreArticleRequest extends FormRequest
             'title' => ['required'],
             'description' => ['required'],
             'cover' => ['required', 'image'],
-            'content' => ['required']
+            'content' => ['required'],
+            'category' => ['required' , 'integer']
         ];
     }
+
 }

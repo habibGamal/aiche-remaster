@@ -1,13 +1,12 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import JoditEditor from "jodit-react";
-import { Button, Form, Input, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Form, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import TextArea from 'antd/lib/input/TextArea';
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
 import { Article, ArticleDB } from '../../Models/Article';
 
-export default function Editor({ articleDB = undefined }: { articleDB?: ArticleDB }) {
+export default function Editor({ articleDB = undefined, categories }: { articleDB?: ArticleDB, categories: { id: number, name: string }[] }) {
     // init article if edit mode
     const article = articleDB && new Article(articleDB);
     // get errors from backend
@@ -48,7 +47,7 @@ export default function Editor({ articleDB = undefined }: { articleDB?: ArticleD
     };
     // form submit
     const store = (values: any) => {
-        Inertia.post('/articles', {
+        Inertia.post(Article.store(), {
             ...values,
             content,
             cover: fileList?.[0]?.originFileObj
@@ -59,8 +58,10 @@ export default function Editor({ articleDB = undefined }: { articleDB?: ArticleD
         if (fileList[0]?.uid && fileList[0]?.uid !== '-1') {
             data.cover = fileList[0].originFileObj
         }
-        Inertia.post(`/articles/${article!.id}`, data);
+        Inertia.post(Article.update(article!.id), data);
     };
+    console.log(categories);
+
 
     return (
         <div className="container my-16">
@@ -126,6 +127,22 @@ export default function Editor({ articleDB = undefined }: { articleDB?: ArticleD
                                 onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
                             />
                         </>
+                    </Form.Item>
+                    <Form.Item
+                        name="category"
+                        label="Category"
+                        validateStatus={errors?.category && 'error'}
+                        help={errors?.category}
+                        initialValue={article?.categoryId}
+                    >
+                        <Select>
+                            {
+                                categories.map(
+                                    category =>
+                                        <Select.Option key={category.id} value={category.id}>{category.name}</Select.Option>
+                                )
+                            }
+                        </Select>
                     </Form.Item>
                     <Form.Item wrapperCol={{ offset: 10, span: 16 }}>
                         <Button type="primary" htmlType="submit">

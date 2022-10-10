@@ -13,6 +13,12 @@ class Article extends Model
         'title',
         'cover',
         'description',
-        'content'
+        'content',
+        'category_id'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(ArticleCategory::class, 'category_id');
+    }
 }
