@@ -98,7 +98,7 @@ class ArticleCategoryController extends Controller
         ]);
         if ($request->hasFile('cover')) {
             $coverPath = saveImageAndGetPath($request->cover);
-            Storage::delete($articleCategory->cover);
+            deleteImage($articleCategory->cover);
             $articleCategory->cover = $coverPath;
         }
         $articleCategory->name;
@@ -115,7 +115,7 @@ class ArticleCategoryController extends Controller
      */
     public function destroy(ArticleCategory $articleCategory)
     {
-        Storage::delete($articleCategory->cover);
+        deleteImage($articleCategory->cover);
         $articleCategory->delete();
         return Redirect::route('article-categories.index');
     }

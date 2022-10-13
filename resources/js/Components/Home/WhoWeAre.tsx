@@ -4,6 +4,7 @@ import React from 'react'
 import { IMAGES_PATH } from '../../Config'
 import useModalProps from '../../Hooks/useModalProps'
 import { AppConfig } from '../../Models/AppConfig';
+import Auth from '../Common/Auth';
 import ChangePresidentPhoto from '../Modals/ChangePresidentPhoto';
 
 export default function WhoWeAre({ presidentPhoto }: { presidentPhoto: string | null }) {
@@ -31,7 +32,9 @@ export default function WhoWeAre({ presidentPhoto }: { presidentPhoto: string | 
                                 <h3 className="text-lg text-[#7a7a7a]">
                                     Mr.President
                                 </h3>
-                                <Button type='link' onClick={() => changePresidentPhotoModal.open()}>Change President photo</Button>
+                                <Auth>
+                                    <Button type='link' onClick={() => changePresidentPhotoModal.open()}>Change President photo</Button>
+                                </Auth>
                             </div>
                         </div>
                     </div>

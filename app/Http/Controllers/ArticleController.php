@@ -100,7 +100,7 @@ class ArticleController extends Controller
         // if changed
         if (isset($validated['cover'])) {
             // delete old image
-            Storage::delete($article->cover);
+            deleteImage($article->cover);
             // save new one
             $article->cover = saveImageAndGetPath($validated['cover']);
         }

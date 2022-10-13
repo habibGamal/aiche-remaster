@@ -5,10 +5,10 @@ import { Article, ArticleDB } from '../../Models/Article';
 import { Link } from '@inertiajs/inertia-react';
 import { BACKGROUNDS_IMAGES_PATH } from '../../Config';
 import { ExternalArticle, ExternalArticleDB } from '../../Models/ExternalArticle';
+import Auth from '../../Components/Common/Auth';
 export default function Index({ externalArticlesDB }: { externalArticlesDB: ExternalArticleDB[], }) {
     const { Meta } = Card;
     const articles = externalArticlesDB.map(article => new ExternalArticle(article));
-    console.log(externalArticlesDB);
 
     return (
         <section>
@@ -41,12 +41,17 @@ export default function Index({ externalArticlesDB }: { externalArticlesDB: Exte
                                         />
                                     }
                                     actions={[
-                                        <Link href={ExternalArticle.delete(article.id)} method="delete">
-                                            <DeleteOutlined key="delete" />
-                                        </Link>,
-                                        <Link href={ExternalArticle.edit(article.id)}>
-                                            <EditOutlined key="edit" />
-                                        </Link>
+                                        <Auth>
+                                            <Link href={ExternalArticle.delete(article.id)} method="delete">
+                                                <DeleteOutlined key="delete" />
+                                            </Link>
+                                        </Auth>
+                                        ,
+                                        <Auth>
+                                            <Link href={ExternalArticle.edit(article.id)}>
+                                                <EditOutlined key="edit" />
+                                            </Link>
+                                        </Auth>
                                     ]}
                                 >
                                     <a target="_blank" href={article.link}>

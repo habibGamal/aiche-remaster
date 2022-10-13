@@ -7,6 +7,7 @@ import { Dropdown, Menu, Popconfirm } from 'antd';
 import { Link } from '@inertiajs/inertia-react';
 import { Committe } from '../../Models/Committe';
 import { Inertia } from '@inertiajs/inertia';
+import Auth from '../Common/Auth';
 
 export default function Committee({ committee }: { committee: Committe }) {
     const menu = (
@@ -45,7 +46,9 @@ export default function Committee({ committee }: { committee: Committe }) {
                     </p>
                 )
             }
-            <Dropdown.Button className="!absolute top-4 right-4" onClick={() => { }} overlay={menu} />
+            <Auth>
+                <Dropdown.Button className="!absolute top-4 right-4" onClick={() => { }} overlay={menu} />
+            </Auth>
         </div>
     )
 }

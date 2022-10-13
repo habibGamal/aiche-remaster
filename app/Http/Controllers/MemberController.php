@@ -89,7 +89,7 @@ class MemberController extends Controller
         ]);
         if ($request->hasFile('profile')) {
             $profile = saveImageAndGetPath($request->profile);
-            Storage::delete($member->profile);
+            deleteImage($member->profile);
             $member->profile = $profile;
         }
         $member->name = $request->name;
@@ -109,7 +109,7 @@ class MemberController extends Controller
      */
     public function destroy(Member $member)
     {
-        Storage::delete($member->profile);
+        deleteImage($member->profile);
         $member->delete();
         return Redirect::route('members.index');
     }

@@ -56,7 +56,7 @@ class ExternalArticleController extends Controller
             'cover' => $cover,
             'category_id' => $request->category,
         ]);
-        return Redirect::route('external-articles.index',['category'=>$request->category]);
+        return Redirect::route('external-articles.index', ['category' => $request->category]);
     }
 
     /**
@@ -90,14 +90,14 @@ class ExternalArticleController extends Controller
         ]);
         if ($request->hasFile('cover')) {
             if ($externalArticle->cover)
-                Storage::delete($externalArticle->cover);
+                deleteImage($externalArticle->cover);
             $externalArticle->cover = saveImageAndGetPath($request->cover);
         }
         $externalArticle->title = $request->title;
         $externalArticle->link = $request->link;
         $externalArticle->category_id = $request->category;
         $externalArticle->save();
-        return Redirect::route('external-articles.index',['category'=>$request->category]);
+        return Redirect::route('external-articles.index', ['category' => $request->category]);
     }
 
     /**
@@ -110,6 +110,6 @@ class ExternalArticleController extends Controller
     {
         $category = $externalArticle->category_id;
         $externalArticle->delete();
-        return Redirect::route('external-articles.index',['category'=>$category]);
+        return Redirect::route('external-articles.index', ['category' => $category]);
     }
 }

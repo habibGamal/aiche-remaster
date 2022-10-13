@@ -14,7 +14,6 @@ export default function Slider({ sliderPhotos }: {
         SLIDER_IMAGES_PATH + 'home_2.jpg',
         SLIDER_IMAGES_PATH + 'home_3.jpg',
     ]
-    console.log(sliderPhotos);
 
     return (
         <Carousel autoplay>

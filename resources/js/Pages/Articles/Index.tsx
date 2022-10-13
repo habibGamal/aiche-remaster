@@ -5,6 +5,7 @@ import { Article, ArticleDB } from '../../Models/Article';
 import { Link } from '@inertiajs/inertia-react';
 import { BACKGROUNDS_IMAGES_PATH } from '../../Config';
 import { ArticleCategoryDB } from '../../Models/ArticleCategory';
+import Auth from '../../Components/Common/Auth';
 export default function Index({ articlesDB }: { articlesDB: ArticleDB[], }) {
     const { Meta } = Card;
     const articles = articlesDB.map(article => new Article(article));
@@ -38,15 +39,16 @@ export default function Index({ articlesDB }: { articlesDB: ArticleDB[], }) {
                                         />
                                     }
                                     actions={[
-                                        <Link href={Article.delete(article.id)} method="delete">
-                                            <DeleteOutlined key="delete" />
-                                        </Link>,
-                                        <Link href={Article.edit(article.id)}>
-                                            <EditOutlined key="edit" />
-                                        </Link>,
-                                        <Badge count={5} size="small">
-                                            <EyeOutlined key="visits" />
-                                        </Badge>
+                                        <Auth>
+                                            <Link href={Article.delete(article.id)} method="delete">
+                                                <DeleteOutlined key="delete" />
+                                            </Link>
+                                        </Auth>,
+                                        <Auth>
+                                            <Link href={Article.edit(article.id)}>
+                                                <EditOutlined key="edit" />
+                                            </Link>
+                                        </Auth>
                                     ]}
                                 >
                                     <Link href={Article.show(article.id)}>

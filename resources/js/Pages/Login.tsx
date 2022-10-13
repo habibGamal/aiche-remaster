@@ -38,7 +38,7 @@ export default function Login() {
                             placeholder="Password"
                         />
                     </Form.Item>
-                    <Form.Item className='text-center mb-0'>
+                    <Form.Item className='text-center !mb-0'>
                         <Button type="primary" htmlType="submit" className="login-form-button mx-auto">
                             Login
                         </Button>

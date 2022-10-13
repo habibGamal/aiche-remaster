@@ -69,6 +69,13 @@ span.header-highlight {
     vertical-align: baseline !important;
 }
 
+.anticon.anticon-loading {
+    margin-right: unset !important;
+}
+.ant-input-affix-wrapper {
+    color: #00000080 !important;
+}
+
 .gallery .ant-tabs-tab-btn {
     @apply text-white;
 }

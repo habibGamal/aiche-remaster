@@ -60,7 +60,6 @@ export default function Editor({ articleDB = undefined, categories }: { articleD
         }
         Inertia.post(Article.update(article!.id), data);
     };
-    console.log(categories);
 
 
     return (

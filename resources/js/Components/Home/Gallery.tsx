@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Inertia } from '@inertiajs/inertia';
 import { Button, Image, Tabs } from 'antd'
 import React, { useMemo } from 'react'
-import { achieveImages, careerkImages, openingImages } from '../../Config';
+import { achieveImages, careerkImages, GALLERY_IMAGES_PATH, openingImages } from '../../Config';
 import useModalProps from '../../Hooks/useModalProps';
 import { EventImages } from '../../Models/EventImages';
+import Auth from '../Common/Auth';
 import AddEventImage from '../Modals/AddEventImage';
 import GalleryEvent from './GalleryEvent';
 
@@ -16,7 +17,9 @@ export default function Gallery({ eventImages }: { eventImages: EventImages[] })
             <AddEventImage {...addEventImageModal.modalProps} />
             <Tabs
                 tabBarExtraContent={
-                    <Button onClick={() => addEventImageModal.open()} type="primary">Add Event</Button>
+                    <Auth>
+                        <Button onClick={() => addEventImageModal.open()} type="primary">Add Event</Button>
+                    </Auth>
                 }
             >
                 <Tabs.TabPane tab="All" key="item-1">
@@ -48,6 +51,9 @@ export default function Gallery({ eventImages }: { eventImages: EventImages[] })
                     )
                 }
             </Tabs>
+            {
+                eventImages.length === 0 && <img className="w-1/2 opacity-80 block mx-auto my-4" src={GALLERY_IMAGES_PATH + 'empty.png'} />
+            }
         </section>
     )
 }

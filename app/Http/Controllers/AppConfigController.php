@@ -37,9 +37,38 @@ class AppConfigController extends Controller
                 'value' => $path,
             ]);
         } else {
-            Storage::delete($president_photo->value);
+            deleteImage($president_photo->value);
             $president_photo->value = $path;
             $president_photo->save();
+        }
+        return Redirect::route('home');
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateVision(Request $request)
+    {
+        $request->validate([
+            'vision' => 'required|string',
+            'vision_description' => 'required|string',
+        ]);
+        // check if the field vision exists
+        $vision = AppConfig::where('name', 'vision')->first();
+        $value = json_encode([
+            'vision' => $request->vision,
+            'vision_description' => $request->vision_description,
+        ]);
+        if ($vision == null) {
+            AppConfig::create([
+                'name' => 'vision',
+                'value' => $value,
+            ]);
+        } else {
+            $vision->value = $value;
+            $vision->save();
         }
         return Redirect::route('home');
     }
@@ -67,7 +96,7 @@ class AppConfigController extends Controller
                 'value' => saveImagesAndGetPathsAsJson($request->slider_photos),
             ]);
         } else {
-            $slider_photos->value = addImagesToJsonArr($slider_photos->value,$request->slider_photos);
+            $slider_photos->value = addImagesToJsonArr($slider_photos->value, $request->slider_photos);
             $slider_photos->save();
         }
         return Redirect::route('edit-slider');
@@ -85,7 +114,7 @@ class AppConfigController extends Controller
         ]);
         // get paths from db
         $slider_photos = AppConfig::where('name', 'slider_photos')->first();
-        $slider_photos->value = deleteImageFromJsonArrImages($slider_photos->value,$request->photo_path);
+        $slider_photos->value = deleteImageFromJsonArrImages($slider_photos->value, $request->photo_path);
         // save it
         $slider_photos->save();
         return Redirect::route('edit-slider');

@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Storage;
 
+if (!function_exists('deleteImage')) {
+    function deleteImage($image)
+    {
+        return Storage::delete('public/images/' . $image);
+    }
+}
 if (!function_exists('saveImageAndGetPath')) {
     function saveImageAndGetPath($image)
     {
@@ -32,7 +38,7 @@ if (!function_exists('saveImagesAndGetPathsAsJson')) {
 }
 
 if (!function_exists('addImagesToJsonArr')) {
-    function addImagesToJsonArr($oldImagesAsJson,$images)
+    function addImagesToJsonArr($oldImagesAsJson, $images)
     {
         $paths = [];
         foreach ($images as $_ => $image) {
@@ -43,7 +49,7 @@ if (!function_exists('addImagesToJsonArr')) {
 }
 
 if (!function_exists('deleteImageFromJsonImages')) {
-    function deleteImageFromJsonArrImages($imagesAsJson,$imageNeedToDelete)
+    function deleteImageFromJsonArrImages($imagesAsJson, $imageNeedToDelete)
     {
         $paths = json_decode($imagesAsJson);
         // get index of the photo that we want to delete
@@ -51,7 +57,7 @@ if (!function_exists('deleteImageFromJsonImages')) {
         // unset it
         unset($paths[$indexWhereDelete]);
         // delete it
-        Storage::delete($imageNeedToDelete);
+        deleteImage($imageNeedToDelete);
         // rearrage (get only values)
         $paths = array_values($paths);
         // encode it

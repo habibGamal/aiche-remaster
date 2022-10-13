@@ -5,6 +5,7 @@ import { FacebookOutlined, LinkedinOutlined, EditOutlined, DeleteOutlined } from
 import { Link } from '@inertiajs/inertia-react'
 import Meta from 'antd/lib/card/Meta'
 import { Inertia } from '@inertiajs/inertia'
+import Auth from '../Common/Auth'
 
 export default function MemberDisplay({ member }: { member: Member }) {
     return (
@@ -16,18 +17,22 @@ export default function MemberDisplay({ member }: { member: Member }) {
             actions={[
                 <a className='text-lg' target="_blank" href={member.facebook}><FacebookOutlined /></a>,
                 <a className='text-lg' target="_blank" href={member.linkedin}><LinkedinOutlined /></a>,
-                <Link className='text-lg' href={Member.edit(member.id)}>
-                    <EditOutlined key="edit" />
-                </Link>
+                <Auth>
+                    <Link className='text-lg' href={Member.edit(member.id)}>
+                        <EditOutlined key="edit" />
+                    </Link>
+                </Auth>
                 ,
-                <Popconfirm
-                    title="Are you sure to delete this Member?"
-                    onConfirm={() => { Inertia.delete(Member.delete(member.id)) }}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <DeleteOutlined className='text-lg' key="delete" />
-                </Popconfirm>
+                <Auth>
+                    <Popconfirm
+                        title="Are you sure to delete this Member?"
+                        onConfirm={() => { Inertia.delete(Member.delete(member.id)) }}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <DeleteOutlined className='text-lg' key="delete" />
+                    </Popconfirm>
+                </Auth>
             ]}
             bodyStyle={{ padding: '12px 24px' }}
         >
