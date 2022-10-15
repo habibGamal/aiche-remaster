@@ -23,7 +23,6 @@ const Home = ({ committesDB, presidentPhotoDB, sliderPhotosDB, eventImagesDB }: 
             <Committees committes={committesDB.map(committe => new Committe(committe))} />
             <Gallery eventImages={eventImages}/>
             <Facts />
-            <div className="my-32">d</div>
         </>
     );
 };

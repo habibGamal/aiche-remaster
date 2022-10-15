@@ -2,13 +2,14 @@ import React from 'react'
 import { EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Badge, Card } from 'antd';
 import { Article, ArticleDB } from '../../Models/Article';
-import { Link } from '@inertiajs/inertia-react';
+import { Link, usePage } from '@inertiajs/inertia-react';
 import { BACKGROUNDS_IMAGES_PATH } from '../../Config';
 import { ArticleCategoryDB } from '../../Models/ArticleCategory';
 import Auth from '../../Components/Common/Auth';
 export default function Index({ articlesDB }: { articlesDB: ArticleDB[], }) {
     const { Meta } = Card;
     const articles = articlesDB.map(article => new Article(article));
+    const { auth } = usePage().props;
     return (
         <section>
             <div className="bg-main">
@@ -38,18 +39,14 @@ export default function Index({ articlesDB }: { articlesDB: ArticleDB[], }) {
                                             src={article.cover}
                                         />
                                     }
-                                    actions={[
-                                        <Auth>
-                                            <Link href={Article.delete(article.id)} method="delete">
-                                                <DeleteOutlined key="delete" />
-                                            </Link>
-                                        </Auth>,
-                                        <Auth>
-                                            <Link href={Article.edit(article.id)}>
-                                                <EditOutlined key="edit" />
-                                            </Link>
-                                        </Auth>
-                                    ]}
+                                    actions={auth ? [
+                                        <Link href={Article.delete(article.id)} method="delete">
+                                            <DeleteOutlined key="delete" />
+                                        </Link>,
+                                        <Link href={Article.edit(article.id)}>
+                                            <EditOutlined key="edit" />
+                                        </Link>
+                                    ] : []}
                                 >
                                     <Link href={Article.show(article.id)}>
                                         <Meta

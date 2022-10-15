@@ -1,3 +1,4 @@
+import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/inertia-react'
 import { Button } from 'antd';
 import React from 'react'
@@ -38,7 +39,7 @@ export default function WhoWeAre({ presidentPhoto }: { presidentPhoto: string | 
                             </div>
                         </div>
                     </div>
-                    <button className="px-8 py-3 block mx-auto font-bold text-xl rounded-full bg-second text-white hover:bg-main transition-colors duration-300">Read More</button>
+                    <button onClick={()=>Inertia.get('/about')} className="px-8 py-3 block mx-auto font-bold text-xl rounded-full bg-second text-white hover:bg-main transition-colors duration-300">Read More</button>
                 </div>
             </section>
             <ChangePresidentPhoto {...changePresidentPhotoModal.modalProps} />

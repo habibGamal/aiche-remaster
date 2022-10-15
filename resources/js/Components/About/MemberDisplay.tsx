@@ -2,12 +2,27 @@ import { Card, Popconfirm } from 'antd'
 import React from 'react'
 import { Member } from '../../Models/Member'
 import { FacebookOutlined, LinkedinOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { Link } from '@inertiajs/inertia-react'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import Meta from 'antd/lib/card/Meta'
 import { Inertia } from '@inertiajs/inertia'
 import Auth from '../Common/Auth'
 
 export default function MemberDisplay({ member }: { member: Member }) {
+    const { auth } = usePage().props;
+    const modification = auth ? [
+        <Link className='text-lg' href={Member.edit(member.id)}>
+            <EditOutlined key="edit" />
+        </Link>
+        ,
+        <Popconfirm
+            title="Are you sure to delete this Member?"
+            onConfirm={() => { Inertia.delete(Member.delete(member.id)) }}
+            okText="Yes"
+            cancelText="No"
+        >
+            <DeleteOutlined className='text-lg' key="delete" />
+        </Popconfirm>
+    ]:[]
     return (
         <Card
             key={member.id}
@@ -17,22 +32,7 @@ export default function MemberDisplay({ member }: { member: Member }) {
             actions={[
                 <a className='text-lg' target="_blank" href={member.facebook}><FacebookOutlined /></a>,
                 <a className='text-lg' target="_blank" href={member.linkedin}><LinkedinOutlined /></a>,
-                <Auth>
-                    <Link className='text-lg' href={Member.edit(member.id)}>
-                        <EditOutlined key="edit" />
-                    </Link>
-                </Auth>
-                ,
-                <Auth>
-                    <Popconfirm
-                        title="Are you sure to delete this Member?"
-                        onConfirm={() => { Inertia.delete(Member.delete(member.id)) }}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <DeleteOutlined className='text-lg' key="delete" />
-                    </Popconfirm>
-                </Auth>
+                ...modification
             ]}
             bodyStyle={{ padding: '12px 24px' }}
         >
