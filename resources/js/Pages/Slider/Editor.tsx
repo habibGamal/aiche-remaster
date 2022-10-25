@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Popconfirm, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Form, Input, Popconfirm, Upload, UploadFile, UploadProps } from 'antd';
 import { PlusOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 import { Inertia } from '@inertiajs/inertia'
@@ -7,13 +7,17 @@ import { usePage } from '@inertiajs/inertia-react'
 import { RcFile } from 'antd/lib/upload';
 import { AppConfig, AppConfigDB } from '../../Models/AppConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faLink, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Slider, SliderDB } from '../../Models/Slider';
 import { useForm } from 'antd/lib/form/Form';
+import useModalProps from '../../Hooks/useModalProps';
+import ChangeSliderLink from '../../Components/Modals/ChangeSliderLink';
 
-export default function Editor({ sliderPhotosDB = undefined }: { sliderPhotosDB?: AppConfigDB }) {
-    // init article if edit mode
-    const appConfig = sliderPhotosDB && new AppConfig(sliderPhotosDB);
-    const sliderPhotos = appConfig?.sliderPhotos();
+export default function Editor({ slidersDB }: { slidersDB?: SliderDB[] }) {
+    const [form] = useForm();
+    const sliders = slidersDB?.map(slider => new Slider(slider));
+    const [currentSlider, setCurrentSlider] = useState<Slider | null>(null);
+    const changeSliderLink = useModalProps();
     // get errors from backend
     const { errors } = usePage().props
     // cover filelist state
@@ -41,6 +45,8 @@ export default function Editor({ sliderPhotosDB = undefined }: { sliderPhotosDB?
             }, 0);
         },
         fileList,
+        multiple: false,
+        maxCount: 1,
         listType: "picture-card",
         onChange: ({ fileList: newFileList }) => {
             setFileList(newFileList);
@@ -48,34 +54,53 @@ export default function Editor({ sliderPhotosDB = undefined }: { sliderPhotosDB?
         onPreview
     };
     // form submit
-    const store = () => {
-        Inertia.post(AppConfig.addSliderPhotos(), {
-            slider_photos: fileList.map(file => file.originFileObj!),
+    const store = (values: any) => {
+        Inertia.post(Slider.store(), {
+            ...values,
+            slider_photo: fileList?.[0]?.originFileObj,
         }, {
-            onSuccess: () => setFileList([]),
+            onSuccess: () => {
+                form.resetFields();
+                setFileList([])
+            },
         })
     };
-    const deletePhoto = (path: string) => {
-        Inertia.post(AppConfig.deleteSliderPhoto(), {
-            photo_path: path,
-        })
-    }
     return (
         <div className="container my-16">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
                 {
-                    sliderPhotos?.map(
-                        photo =>
+                    currentSlider &&
+                    <ChangeSliderLink {...changeSliderLink.modalProps} slider={currentSlider} />
+                }
+                {
+                    sliders?.map(
+                        slider =>
                             <div className="relative">
-                                <img className='w-full' src={photo.path} />
+                                {
+                                    slider.link ?
+                                        <a target="_blank" href={slider.link}>
+                                            <img className='w-full' src={slider.path} />
+                                        </a>
+                                        : <img className='w-full' src={slider.path} />
+
+                                }
                                 <Popconfirm
-                                    title="Are you sure to delete this photo?"
-                                    onConfirm={() => deletePhoto(photo.name)}
+                                    title="Are you sure to delete this slide?"
+                                    onConfirm={() => Inertia.delete(Slider.delete(slider.id))}
                                     okText="Yes"
                                     cancelText="No"
                                 >
                                     <Button className='!absolute bottom-1 left-1' type='primary' danger icon={<FontAwesomeIcon icon={faTrash} />} />
                                 </Popconfirm>
+                                <Button
+                                    onClick={() => {
+                                        setCurrentSlider(slider);
+                                        changeSliderLink.open();
+                                    }}
+                                    className='!absolute bottom-1 left-10'
+                                    type='primary'
+                                    icon={<FontAwesomeIcon icon={faLink} />}
+                                />
                             </div>
                     )
                 }
@@ -85,17 +110,26 @@ export default function Editor({ sliderPhotosDB = undefined }: { sliderPhotosDB?
                     name="basic"
                     initialValues={{ remember: true }}
                     onFinish={store}
+                    form={form}
                     autoComplete="off"
                     method='post'
-                    className="flex flex-col items-center gap-4 justify-center"
+                    className="max-w-[500px]"
                     encType='multipart/form-data'
                 >
                     <Form.Item
-                        label="Add image to slider"
-                        name="slider_photos"
+                        label="Link for the slide"
+                        name="link"
+                        validateStatus={errors?.link && 'error'}
+                        help={errors?.link}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Image of the slide"
+                        name="slider_photo"
                         valuePropName="fileList"
-                        validateStatus={errors?.slider_photos && 'error'}
-                        help={errors?.slider_photos}>
+                        validateStatus={errors?.slider_photo && 'error'}
+                        help={errors?.slider_photo}>
                         <>
                             <ImgCrop aspect={19 / 7} quality={1}>
                                 <Upload {...props} listType="picture-card" >

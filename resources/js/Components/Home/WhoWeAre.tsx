@@ -1,15 +1,16 @@
 import { Inertia } from '@inertiajs/inertia';
-import { Link } from '@inertiajs/inertia-react'
 import { Button } from 'antd';
 import React from 'react'
-import { IMAGES_PATH } from '../../Config'
 import useModalProps from '../../Hooks/useModalProps'
 import { AppConfig } from '../../Models/AppConfig';
 import Auth from '../Common/Auth';
+import ChangePresidentName from '../Modals/ChangePresidentName';
 import ChangePresidentPhoto from '../Modals/ChangePresidentPhoto';
+import { EditOutlined } from '@ant-design/icons'
 
-export default function WhoWeAre({ presidentPhoto }: { presidentPhoto: string | null }) {
+export default function WhoWeAre({ presidentPhoto, presidentName }: { presidentPhoto: string | null, presidentName: string | null }) {
     const changePresidentPhotoModal = useModalProps();
+    const changePresidentNameModal = useModalProps();
     return (
         <>
             <section className="my-16">
@@ -26,9 +27,10 @@ export default function WhoWeAre({ presidentPhoto }: { presidentPhoto: string | 
                         </div>
                         <div className="flex justify-center text-center">
                             <div className="relative president-shadow">
-                                <img className="w-[200px] h-[200px] rounded-full object-cover " src={presidentPhoto || AppConfig.defaultPresidentPhoto()} alt="" />
-                                <h2 className="text-2xl mb-0">
-                                    Ahmed El-Atar
+                                <img className="w-[200px] h-[200px] rounded-full object-cover mx-auto" src={presidentPhoto || AppConfig.defaultPresidentPhoto()} alt="" />
+                                <h2 className="text-2xl mb-0 mt-2">
+                                    {presidentName || 'Name of President'}
+                                    <Button type='link' icon={<EditOutlined />} onClick={() => changePresidentNameModal.open()} />
                                 </h2>
                                 <h3 className="text-lg text-[#7a7a7a]">
                                     Mr.President
@@ -39,10 +41,11 @@ export default function WhoWeAre({ presidentPhoto }: { presidentPhoto: string | 
                             </div>
                         </div>
                     </div>
-                    <button onClick={()=>Inertia.get('/about')} className="px-8 py-3 block mx-auto font-bold text-xl rounded-full bg-second text-white hover:bg-main transition-colors duration-300">Read More</button>
+                    <button onClick={() => Inertia.get('/about')} className="px-8 py-3 block mx-auto font-bold text-xl rounded-full bg-second text-white hover:bg-main transition-colors duration-300">Read More</button>
                 </div>
             </section>
             <ChangePresidentPhoto {...changePresidentPhotoModal.modalProps} />
+            <ChangePresidentName presidentName={presidentName} {...changePresidentNameModal.modalProps} />
         </>
     )
 }

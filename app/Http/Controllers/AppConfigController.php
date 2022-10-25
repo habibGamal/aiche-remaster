@@ -43,6 +43,30 @@ class AppConfigController extends Controller
         }
         return Redirect::route('home');
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updatePresidentName(Request $request)
+    {
+        $request->validate([
+            'president_name' => 'required|string'
+        ]);
+        $president_name = AppConfig::where('name', 'president_name')->first();
+        if ($president_name == null) {
+            AppConfig::create([
+                'name' => 'president_name',
+                'value' => $request->president_name,
+            ]);
+        } else {
+            $president_name->value = $request->president_name;
+            $president_name->save();
+        }
+        return Redirect::route('home');
+    }
     /**
      * Update the specified resource in storage.
      *

@@ -14,10 +14,9 @@ export default function Index({ articlesDB }: { articlesDB: ArticleDB[], }) {
         <section>
             <div className="bg-main">
                 <div className="container">
-                    <div className="grid grid-cols-2 items-center justify-between">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 items-center justify-between">
                         <div>
-                            <h2 className="text-6xl font-bold text-white">Our <span className="header-highlight"> Articles</span></h2>
-                            <p className="text-xl text-gray-100">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora excepturi nisi vitae explicabo, nostrum quia quis. At repellat nesciunt deleniti distinctio veniam, vero iste tenetur iusto eaque placeat officia quasi.</p>
+                            <h2 className="text-5xl text-center sm:text-6xl font-bold text-white">Our <span className="header-highlight"> Articles</span></h2>
                         </div>
                         <div>
                             <img className="w-[500px] aspect-square object-contain mx-auto" src={BACKGROUNDS_IMAGES_PATH + 'articles.png'} />

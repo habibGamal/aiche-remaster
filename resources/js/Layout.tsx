@@ -10,6 +10,7 @@ import { Member } from './Models/Member';
 import { Committe } from './Models/Committe';
 import { AppConfig } from './Models/AppConfig';
 import { ExternalArticle } from './Models/ExternalArticle';
+import { Slider } from './Models/Slider';
 
 export default function Layout(props: { children: JSX.Element }) {
     useEffect(() => {
@@ -123,7 +124,7 @@ export default function Layout(props: { children: JSX.Element }) {
                         },
                         {
                             label: (
-                                <Link href={AppConfig.editSlider()}>
+                                <Link href={Slider.create()}>
                                     Slider
                                 </Link>
                             ),

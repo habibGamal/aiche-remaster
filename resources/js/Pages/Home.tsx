@@ -9,19 +9,21 @@ import Facts from '../Components/Home/Facts';
 import { Committe, CommitteDB } from '../Models/Committe';
 import { AppConfig, AppConfigDB } from '../Models/AppConfig';
 import { EventImages, EventImagesDB } from '../Models/EventImages';
+import { Slider as SliderModel, SliderDB } from '../Models/Slider';
 
-const Home = ({ committesDB, presidentPhotoDB, sliderPhotosDB, eventImagesDB }: { committesDB: CommitteDB[], presidentPhotoDB: AppConfigDB, sliderPhotosDB: AppConfigDB, eventImagesDB: EventImagesDB[] }) => {
+const Home = ({ committesDB, presidentPhotoDB, slidersDB, eventImagesDB, presidentNameDB }: { committesDB: CommitteDB[], presidentPhotoDB: AppConfigDB, slidersDB: SliderDB[], presidentNameDB: AppConfigDB, eventImagesDB: EventImagesDB[] }) => {
     const presidentPhoto = (new AppConfig(presidentPhotoDB)).presidentPhoto();
-    const sliderPhotos = (new AppConfig(sliderPhotosDB)).sliderPhotos();
+    const presidentName = (new AppConfig(presidentNameDB)).presidentName();
+    const sliders = slidersDB.map(slider => new SliderModel(slider));
     const eventImages = eventImagesDB.map(event => new EventImages(event));
     return (
         <>
-            <Slider sliderPhotos={sliderPhotos} />
-            <WhoWeAre presidentPhoto={presidentPhoto} />
+            <Slider sliders={sliders} />
+            <WhoWeAre presidentPhoto={presidentPhoto} presidentName={presidentName} />
             <Services />
             <Quotes />
             <Committees committes={committesDB.map(committe => new Committe(committe))} />
-            <Gallery eventImages={eventImages}/>
+            <Gallery eventImages={eventImages} />
             <Facts />
         </>
     );

@@ -8,10 +8,12 @@ use App\Http\Controllers\CommitteController;
 use App\Http\Controllers\EventImagesController;
 use App\Http\Controllers\ExternalArticleController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\SliderController;
 use App\Models\AppConfig;
 use App\Models\Committe;
 use App\Models\EventImages;
 use App\Models\Member;
+use App\Models\Slider;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -38,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('app-config')->group(function () {
         Route::get('/edit-slider', [AppConfigController::class, 'editSlider'])->name('edit-slider');
         Route::post('/update-president-photo', [AppConfigController::class, 'updatePresidentPhoto']);
+        Route::post('/update-president-name', [AppConfigController::class, 'updatePresidentName']);
         Route::post('/update-vision', [AppConfigController::class, 'updateVision']);
         Route::post('/add-slider-photos', [AppConfigController::class, 'addSliderPhotos']);
         Route::post('/delete-slider-photo', [AppConfigController::class, 'deleteSliderPhoto']);
@@ -55,13 +58,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('article-categories', ArticleCategoryController::class)->except(['index','show']);
     Route::resource('members', MemberController::class)->except(['index','show']);
     Route::resource('committes', CommitteController::class)->except(['index','show']);
+    Route::resource('slider', SliderController::class)->except(['index','show','edit']);
 });
 
 Route::get('/', function () {
     return Inertia::render('Home', [
         'committesDB' => Committe::all(),
         'presidentPhotoDB' => AppConfig::where('name', 'president_photo')->first(),
-        'sliderPhotosDB' => AppConfig::where('name', 'slider_photos')->first(),
+        'presidentNameDB' => AppConfig::where('name', 'president_name')->first(),
+        'slidersDB' => Slider::all(),
         'eventImagesDB' => EventImages::all(),
     ]);
 })->name('home');

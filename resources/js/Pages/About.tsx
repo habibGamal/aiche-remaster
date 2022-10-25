@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/inertia-react'
 import React from 'react'
 import { ABOUT_IMAGES_PATH, BACKGROUNDS_IMAGES_PATH } from '../Config'
-import { FacebookOutlined, LinkedinOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import {  EditOutlined } from '@ant-design/icons'
 import { Member, MemberDB } from '../Models/Member'
 import { Button, Card, Empty, Popconfirm } from 'antd'
 import Meta from 'antd/lib/card/Meta'
@@ -38,10 +38,9 @@ export default function About({ membersDB, visionDB }: { membersDB: MemberDB[], 
             <section>
                 <div className="bg-main">
                     <div className="container">
-                        <div className="grid grid-cols-2 items-center justify-between">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 items-center justify-between">
                             <div>
-                                <h2 className="text-6xl font-bold text-white">About <span className="header-highlight"> Us</span></h2>
-                                <p className="text-xl text-gray-100">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora excepturi nisi vitae explicabo, nostrum quia quis. At repellat nesciunt deleniti distinctio veniam, vero iste tenetur iusto eaque placeat officia quasi.</p>
+                                <h2 className="text-5xl text-center sm:text-6xl font-bold text-white">About <span className="header-highlight"> Us</span></h2>
                             </div>
                             <div>
                                 <img className="w-[500px] aspect-square object-contain mx-auto" src={BACKGROUNDS_IMAGES_PATH + 'about.png'} />

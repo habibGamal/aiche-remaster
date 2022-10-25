@@ -6,6 +6,11 @@ export type AppConfigDB = {
     value: any,
 }
 
+export interface SliderPhoto {
+    name:string;
+    link:string;
+}
+
 export class AppConfig {
     public id: number | null = null;
     public name: string | null = null;
@@ -18,10 +23,9 @@ export class AppConfig {
             this._value = appConfig.value;
         }
     }
-    public sliderPhotos() {
-        if (this.name == 'slider_photos') {
-            const rawPaths = JSON.parse(this._value) as string[];
-            return rawPaths.map(name => ({ path: '/storage/images/' + name, name }));
+    public presidentName(): string | null {
+        if (this.name == 'president_name') {
+            return this._value;
         }
         return null;
     }
@@ -50,14 +54,8 @@ export class AppConfig {
     static updatePresidentPhoto() {
         return this.slug + '/update-president-photo';
     }
-    static editSlider() {
-        return this.slug + '/edit-slider';
-    }
-    static addSliderPhotos() {
-        return this.slug + '/add-slider-photos';
-    }
-    static deleteSliderPhoto() {
-        return this.slug + '/delete-slider-photo';
+    static updatePresidentName() {
+        return this.slug + '/update-president-name';
     }
 
 }
