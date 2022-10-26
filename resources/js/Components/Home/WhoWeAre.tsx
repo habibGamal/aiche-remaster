@@ -30,7 +30,9 @@ export default function WhoWeAre({ presidentPhoto, presidentName }: { presidentP
                                 <img className="w-[200px] h-[200px] rounded-full object-cover mx-auto" src={presidentPhoto || AppConfig.defaultPresidentPhoto()} alt="" />
                                 <h2 className="text-2xl mb-0 mt-2">
                                     {presidentName || 'Name of President'}
-                                    <Button type='link' icon={<EditOutlined />} onClick={() => changePresidentNameModal.open()} />
+                                    <Auth>
+                                        <Button type='link' icon={<EditOutlined />} onClick={() => changePresidentNameModal.open()} />
+                                    </Auth>
                                 </h2>
                                 <h3 className="text-lg text-[#7a7a7a]">
                                     Mr.President

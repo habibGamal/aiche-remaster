@@ -4,8 +4,6 @@ import { Badge, Card } from 'antd';
 import { Article, ArticleDB } from '../../Models/Article';
 import { Link, usePage } from '@inertiajs/inertia-react';
 import { BACKGROUNDS_IMAGES_PATH } from '../../Config';
-import { ArticleCategoryDB } from '../../Models/ArticleCategory';
-import Auth from '../../Components/Common/Auth';
 export default function Index({ articlesDB }: { articlesDB: ArticleDB[], }) {
     const { Meta } = Card;
     const articles = articlesDB.map(article => new Article(article));
