@@ -7,7 +7,6 @@ import { ArticleCategory, ArticleCategoryDB } from '../../Models/ArticleCategory
 import { Inertia } from '@inertiajs/inertia';
 import Auth from '../../Components/Common/Auth';
 export default function Index({ articleCategoriesDB }: { articleCategoriesDB: ArticleCategoryDB[] }) {
-    const { Meta } = Card;
     const articleCategories = articleCategoriesDB.map(category => new ArticleCategory(category));
     const deleteCategory = (id: number) => {
         Inertia.delete(

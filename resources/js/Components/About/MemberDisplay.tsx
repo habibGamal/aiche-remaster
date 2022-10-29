@@ -38,7 +38,7 @@ export default function MemberDisplay({ member }: { member: Member }) {
         >
             <Meta
                 className="text-center justify-center py-1"
-                title={<h4 className="text-2xl mb-0">{member.name}</h4>}
+                title={<h4 className="text-2xl mb-0 whitespace-normal">{member.name}</h4>}
                 description={<span className="uppercase">{member.position}</span>}
             />
         </Card>

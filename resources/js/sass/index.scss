@@ -5,6 +5,17 @@
     font-family: "Poppins";
     src: url("../fonts/Poppins-Regular.ttf");
 }
+
+#app {
+    min-height: 100vh;
+    position: relative;
+}
+footer {
+    position:absolute;
+    width: 100%;
+    bottom: 0;
+}
+
 h1,
 h2,
 h3,

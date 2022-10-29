@@ -14,6 +14,7 @@ import { Slider } from './Models/Slider';
 
 export default function Layout(props: { children: JSX.Element }) {
     useEffect(() => {
+        // loading indicator
         let loading: any;
         Inertia.on('start', () => {
             loading = message.loading('', 0);
@@ -167,6 +168,10 @@ export default function Layout(props: { children: JSX.Element }) {
                 </div>
             </nav>
             {props.children}
+            <div className="h-4"></div>
+            <footer className="p-4 text-center bg-main text-white">
+                All copyrights &copy; reserved for AIChE Suize , developed by Eng. Habib Gamal
+            </footer>
         </>
     )
 }

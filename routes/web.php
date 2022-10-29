@@ -10,6 +10,7 @@ use App\Http\Controllers\ExternalArticleController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SliderController;
 use App\Models\AppConfig;
+use App\Models\ArticleCategory;
 use App\Models\Committe;
 use App\Models\EventImages;
 use App\Models\Member;
@@ -68,6 +69,7 @@ Route::get('/', function () {
         'presidentNameDB' => AppConfig::where('name', 'president_name')->first(),
         'slidersDB' => Slider::all(),
         'eventImagesDB' => EventImages::all(),
+        'articleCategoriesDB' => ArticleCategory::all()
     ]);
 })->name('home');
 
