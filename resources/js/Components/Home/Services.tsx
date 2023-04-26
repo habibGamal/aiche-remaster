@@ -43,22 +43,17 @@ export default function Services({ articleCategoriesDB }: { articleCategoriesDB:
         <section className="my-16">
             <div className="container">
                 <h2 className="section-title">Our  <span className="header-highlight">Articles</span></h2>
-                {/* <div className="flex items-start gap-8 justify-evenly flex-wrap">
-                    {
-                        services.map((service, i) => <Service key={i} service={service} />)
-                    }
-                </div> */}
                 {
                     articleCategories.length === 0 &&
                     <Empty className="mx-auto" />
                 }
-                <div className="grid grid-cols-4 items-start gap-4">
+                <div className="flex flex-wrap gap-8 justify-evenly">
                     {
                         articleCategories.map(category =>
                             <>
-                                <div className="rounded shadow relative min-w-[300px] cursor-pointer article-category">
+                                <div className="rounded shadow relative w-full lg:w-[40%] xl:w-[30%] cursor-pointer article-category">
                                     <h4 className="text-xl bg-second text-white py-1 px-2  absolute rounded-r top-4 shadow z-20">{category.name}</h4>
-                                    <div onClick={() => Inertia.get(ArticleCategory.show(category.id))} className="cover">
+                                    <div  onClick={() => Inertia.get(ArticleCategory.show(category.id))} className="w-full cover">
                                         <img src={category.cover} />
                                     </div>
                                     <Auth>

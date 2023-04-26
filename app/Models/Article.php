@@ -14,7 +14,8 @@ class Article extends Model
         'cover',
         'description',
         'content',
-        'category_id'
+        'category_id',
+        'order'
     ];
 
     public function category()

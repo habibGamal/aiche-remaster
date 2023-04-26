@@ -23,8 +23,10 @@ class ArticleController extends Controller
             'articlesDB' =>
             $category
                 ->articles()
-                ->select(['id', 'title', 'cover', 'description', 'category_id'])
+                ->select(['id', 'title', 'cover', 'description', 'category_id','order'])
+                ->orderBy('order')
                 ->get(),
+            'categoryDB' => $category
         ]);
     }
 
@@ -36,7 +38,7 @@ class ArticleController extends Controller
     public function create()
     {
         return Inertia::render('Articles/Editor', [
-            'categories' => ArticleCategory::where('type','articles')->select(['id', 'name'])->get(),
+            'categories' => ArticleCategory::where('type', 'articles')->select(['id', 'name'])->get(),
         ]);
     }
 
@@ -57,6 +59,7 @@ class ArticleController extends Controller
             'description' => $validated['description'],
             'content' => $validated['content'],
             'category_id' => $validated['category'],
+            'order' => $request->order,
         ]);
         return Redirect::route('articles.index', ['category' => $validated['category']]);
     }
@@ -82,7 +85,7 @@ class ArticleController extends Controller
     {
         return Inertia::render('Articles/Editor', [
             'articleDB' => $article,
-            'categories' => ArticleCategory::where('type','articles')->select(['id', 'name'])->get(),
+            'categories' => ArticleCategory::where('type', 'articles')->select(['id', 'name'])->get(),
         ]);
     }
 
@@ -109,9 +112,10 @@ class ArticleController extends Controller
         $article->description = $validated['description'];
         $article->content = $validated['content'];
         $article->category_id = $validated['category'];
+        $article->order = $request->order;
         $article->save();
         // return to index page
-        return Redirect::route('articles.index',['category'=>$validated['category']]);
+        return Redirect::route('articles.index', ['category' => $validated['category']]);
     }
 
     /**

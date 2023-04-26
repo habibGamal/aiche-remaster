@@ -18,7 +18,10 @@ class ExternalArticleController extends Controller
      */
     public function index(ArticleCategory $category)
     {
-        return Inertia::render('ExternalArticles/Index', ['externalArticlesDB' => $category->external_articles]);
+        return Inertia::render('ExternalArticles/Index', [
+            'externalArticlesDB' => $category->external_articles()->select(['*'])->orderBy('order')->get(),
+            'categoryDB' => $category
+        ]);
     }
 
     /**
@@ -55,6 +58,7 @@ class ExternalArticleController extends Controller
             'link' => $request->link,
             'cover' => $cover,
             'category_id' => $request->category,
+            'order' => $request->order,
         ]);
         return Redirect::route('external-articles.index', ['category' => $request->category]);
     }
@@ -96,6 +100,7 @@ class ExternalArticleController extends Controller
         $externalArticle->title = $request->title;
         $externalArticle->link = $request->link;
         $externalArticle->category_id = $request->category;
+        $externalArticle->order = $request->order;
         $externalArticle->save();
         return Redirect::route('external-articles.index', ['category' => $request->category]);
     }

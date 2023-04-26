@@ -1,42 +1,58 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 import JoditEditor from "jodit-react";
-import { Button, Form, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
-import { Article, ArticleDB } from '../../Models/Article';
+import {
+    Button,
+    Form,
+    Input,
+    Select,
+    Upload,
+    UploadFile,
+    UploadProps,
+} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Inertia } from "@inertiajs/inertia";
+import { usePage } from "@inertiajs/inertia-react";
+import { Article, ArticleDB } from "../../Models/Article";
 
-export default function Editor({ articleDB = undefined, categories }: { articleDB?: ArticleDB, categories: { id: number, name: string }[] }) {
+export default function Editor({
+    articleDB = undefined,
+    categories,
+}: {
+    articleDB?: ArticleDB;
+    categories: { id: number; name: string }[];
+}) {
     // init article if edit mode
     const article = articleDB && new Article(articleDB);
     // get errors from backend
-    const { errors } = usePage().props
+    const { errors } = usePage().props;
     // editor ref
-    const editor = useRef(null)
+    const editor = useRef(null);
     // editor content , init its content if in edit mode
-    const [content, setContent] = useState(article?.content || '');
+    const [content, setContent] = useState(article?.content || "");
     // editor config
     const config = {
         readonly: false,
-        placeholder: 'Start typings...',
+        placeholder: "Start typings...",
         uploader: {
-            insertImageAsBase64URI: true
+            insertImageAsBase64URI: true,
         },
-    }
+    };
     // cover filelist state
     const [fileList, setFileList] = useState<UploadFile[]>(
-        article ? [
-            {
-                uid: '-1',
-                name: article.coverName,
-                status: 'done',
-                url: article.absCoverURI,
-            },
-        ] : []
+        article
+            ? [
+                  {
+                      uid: "-1",
+                      name: article.coverName,
+                      status: "done",
+                      url: article.absCoverURI,
+                  },
+              ]
+            : []
     );
     // cover image upload props
     const props: UploadProps = {
-        beforeUpload: file => {
+        beforeUpload: (file) => {
             return false;
         },
         maxCount: 1,
@@ -50,38 +66,41 @@ export default function Editor({ articleDB = undefined, categories }: { articleD
         Inertia.post(Article.store(), {
             ...values,
             content,
-            cover: fileList?.[0]?.originFileObj
-        })
+            cover: fileList?.[0]?.originFileObj,
+        });
     };
     const update = (values: any) => {
-        const data = { ...values, content, _method: 'put' }
-        if (fileList[0]?.uid && fileList[0]?.uid !== '-1') {
-            data.cover = fileList[0].originFileObj
+        const data = { ...values, content, _method: "put" };
+        if (fileList[0]?.uid && fileList[0]?.uid !== "-1") {
+            data.cover = fileList[0].originFileObj;
         }
         Inertia.post(Article.update(article!.id), data);
     };
-
 
     return (
         <div className="container my-16">
             <div className="mx-auto">
                 <Form
                     name="basic"
-                    labelCol={{ span: 4 }}
-                    wrapperCol={{ span: 16 }}
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 14 }}
                     initialValues={{ remember: true }}
                     onFinish={article ? update : store}
                     autoComplete="off"
-                    method='post'
-                    encType='multipart/form-data'
+                    method="post"
+                    encType="multipart/form-data"
+                    className="rounded-xl bg-white shadow-xl !p-8 border border-second"
                 >
+                    <h2 className="text-4xl text-center mb-8 sm:text-5xl font-bold text-second">
+                        Article
+                    </h2>
                     <Form.Item
                         label="Title"
                         name="title"
                         rules={[{ required: false, message: errors?.title }]}
-                        validateStatus={errors?.title && 'error'}
+                        validateStatus={errors?.title && "error"}
                         help={errors?.title}
-                        initialValue={article?.title || ''}
+                        initialValue={article?.title || ""}
                     >
                         <Input />
                     </Form.Item>
@@ -89,8 +108,9 @@ export default function Editor({ articleDB = undefined, categories }: { articleD
                         label="Cover"
                         name="cover"
                         valuePropName="fileList"
-                        validateStatus={errors?.cover && 'error'}
-                        help={errors?.cover}>
+                        validateStatus={errors?.cover && "error"}
+                        help={errors?.cover}
+                    >
                         <>
                             <Upload {...props} listType="picture-card">
                                 <div>
@@ -103,18 +123,18 @@ export default function Editor({ articleDB = undefined, categories }: { articleD
                     <Form.Item
                         name="description"
                         label="Description"
-                        rules={[{ message: '' }]}
-                        validateStatus={errors?.description && 'error'}
+                        rules={[{ message: "" }]}
+                        validateStatus={errors?.description && "error"}
                         help={errors?.description}
-                        initialValue={article?.description || ''}
+                        initialValue={article?.description || ""}
                     >
                         <Input.TextArea allowClear showCount />
                     </Form.Item>
                     <Form.Item
                         name="content"
                         label="Content"
-                        rules={[{ message: '' }]}
-                        validateStatus={errors?.content && 'error'}
+                        rules={[{ message: "" }]}
+                        validateStatus={errors?.content && "error"}
                         help={errors?.content}
                     >
                         <>
@@ -122,24 +142,44 @@ export default function Editor({ articleDB = undefined, categories }: { articleD
                                 ref={editor}
                                 value={content}
                                 config={config}
-                                onChange={newContent => { }}
-                                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                onChange={(newContent) => {}}
+                                onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
                             />
                         </>
                     </Form.Item>
                     <Form.Item
                         name="category"
                         label="Category"
-                        validateStatus={errors?.category && 'error'}
+                        validateStatus={errors?.category && "error"}
                         help={errors?.category}
                         initialValue={article?.categoryId}
                     >
                         <Select>
+                            {categories.map((category) => (
+                                <Select.Option
+                                    key={category.id}
+                                    value={category.id}
+                                >
+                                    {category.name}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Priority"
+                        name="order"
+                        rules={[{ required: false, message: errors?.title }]}
+                        validateStatus={errors?.order && 'error'}
+                        help={errors?.order}
+                        initialValue={article?.order}
+                    >
+                        <Select>
                             {
-                                categories.map(
-                                    category =>
-                                        <Select.Option key={category.id} value={category.id}>{category.name}</Select.Option>
-                                )
+                                // generate options
+                                Array.from(Array(20).keys()).map((i) => {
+                                    return <Select.Option key={i} value={i}>{i+1}</Select.Option>
+                                })
                             }
                         </Select>
                     </Form.Item>
@@ -152,4 +192,4 @@ export default function Editor({ articleDB = undefined, categories }: { articleD
             </div>
         </div>
     );
-};
+}

@@ -73,14 +73,18 @@ export default function Editor({ memberDB = undefined }: { memberDB?: MemberDB }
             <div className="mx-auto">
                 <Form
                     name="basic"
-                    labelCol={{ span: 4 }}
-                    wrapperCol={{ span: 16 }}
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 14 }}
                     initialValues={{ remember: true }}
                     onFinish={member ? update : store}
                     autoComplete="off"
                     method='post'
                     encType='multipart/form-data'
+                    className="rounded-xl bg-white shadow-xl !p-8 border border-second"
                 >
+                    <h2 className="text-4xl text-center mb-8 sm:text-5xl font-bold text-second">
+                        Members
+                    </h2>
                     <Form.Item
                         label="Member Name"
                         name="name"

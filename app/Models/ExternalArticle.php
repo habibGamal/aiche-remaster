@@ -13,7 +13,8 @@ class ExternalArticle extends Model
         'title',
         'link',
         'cover',
-        'category_id'
+        'category_id',
+        'order'
     ];
 
     public $timestamps = false;

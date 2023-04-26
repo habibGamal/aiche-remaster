@@ -168,9 +168,9 @@ export default function Layout(props: { children: JSX.Element }) {
                 </div>
             </nav>
             {props.children}
-            <div className="h-4"></div>
+            <div className="h-12"></div>
             <footer className="p-4 text-center bg-main text-white">
-                All copyrights &copy; reserved for AIChE Suize , developed by Eng. Habib Gamal
+                All copyrights &copy; reserved for AIChE Suiz , developed by Eng. Habib Gamal
             </footer>
         </>
     )

@@ -12,7 +12,8 @@ class ArticleCategory extends Model
     public $fillable = [
         'name',
         'cover',
-        'type'
+        'type',
+        'order'
     ];
 
     public $timestamps = false;

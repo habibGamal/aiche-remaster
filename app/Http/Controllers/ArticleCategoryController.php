@@ -18,7 +18,7 @@ class ArticleCategoryController extends Controller
      */
     public function index()
     {
-        return Inertia::render('ArticlesCategories/Index', ['articleCategoriesDB' => ArticleCategory::all()]);
+        return Inertia::render('ArticlesCategories/Index', ['articleCategoriesDB' => ArticleCategory::select()->orderBy('order')->get()]);
     }
 
     /**
@@ -42,13 +42,14 @@ class ArticleCategoryController extends Controller
         $request->validate([
             'name' => 'required|string',
             'cover' => 'required|image',
-            'type' => ['required', Rule::in(['external_articles', 'articles'])]
+            'type' => ['required', Rule::in(['external_articles', 'articles'])],
         ]);
         $coverPath = saveImageAndGetPath($request->cover);
         ArticleCategory::create([
             'name' => $request->name,
             'cover' => $coverPath,
-            'type' => $request->type
+            'type' => $request->type,
+            'order' => $request->order,
         ]);
         return Redirect::route('article-categories.index');
     }
@@ -93,7 +94,7 @@ class ArticleCategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'cover' => 'required|image',
+            'cover' => 'image',
             'type' => ['required', Rule::in(['external_articles', 'articles'])]
         ]);
         if ($request->hasFile('cover')) {
@@ -101,8 +102,9 @@ class ArticleCategoryController extends Controller
             deleteImage($articleCategory->cover);
             $articleCategory->cover = $coverPath;
         }
-        $articleCategory->name;
-        $articleCategory->type;
+        $articleCategory->name = $request->name;
+        $articleCategory->type = $request->type;
+        $articleCategory->order = $request->order;
         $articleCategory->save();
         return Redirect::route('article-categories.index');
     }

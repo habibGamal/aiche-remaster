@@ -72,14 +72,18 @@ export default function Editor({ articleCategoryDB = undefined }: { articleCateg
             <div className="mx-auto">
                 <Form
                     name="basic"
-                    labelCol={{ span: 4 }}
-                    wrapperCol={{ span: 16 }}
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 14 }}
                     initialValues={{ remember: true }}
                     onFinish={articleCategory ? update : store}
                     autoComplete="off"
                     method='post'
                     encType='multipart/form-data'
+                    className="rounded-xl bg-white shadow-xl !p-8 border border-second"
                 >
+                    <h2 className="text-4xl text-center mb-8 sm:text-5xl font-bold text-second">
+                        Article Category
+                    </h2>
                     <Form.Item
                         label="Category Name"
                         name="name"
@@ -118,6 +122,24 @@ export default function Editor({ articleCategoryDB = undefined }: { articleCateg
                         <Select>
                             <Select.Option value={ArticleCategoryType.ExternalArticles}>External Articles</Select.Option>
                             <Select.Option value={ArticleCategoryType.Articles}>Articles</Select.Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        label="Priority"
+                        name="order"
+                        rules={[{ required: false, message: errors?.title }]}
+                        validateStatus={errors?.order && 'error'}
+                        help={errors?.order}
+                        initialValue={articleCategory?.order}
+                    >
+                        <Select>
+                            {
+                                // generate options
+                                Array.from(Array(20).keys()).map((i) => {
+                                    return <Select.Option key={i} value={i}>{i+1}</Select.Option>
+                                })
+                            }
+                            {/* <Select.Option value={20}>20</Select.Option> */}
                         </Select>
                     </Form.Item>
                     <Form.Item wrapperCol={{ offset: 10, span: 16 }}>

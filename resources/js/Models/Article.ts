@@ -1,15 +1,16 @@
 import { Model } from "../Core/Model";
 
 export type ArticleDB = {
-    id: number,
-    title: string,
-    cover: string,
-    description: string,
-    content: string,
-    category_id: number,
-    created_at: string,
-    updated_at: string,
-}
+    id: number;
+    title: string;
+    cover: string;
+    description: string;
+    content: string;
+    category_id: number;
+    order: number;
+    created_at: string;
+    updated_at: string;
+};
 
 export class Article extends Model {
     public id: number;
@@ -18,7 +19,8 @@ export class Article extends Model {
     public description: string;
     public content: string;
     public categoryId: number;
-    static slug = '/articles';
+    public order: number;
+    static slug = "/articles";
     constructor(article: ArticleDB) {
         super();
         this.id = article.id;
@@ -27,14 +29,15 @@ export class Article extends Model {
         this.description = article.description;
         this.content = article.content;
         this.categoryId = article.category_id;
+        this.order = article.order;
     }
     public get cover() {
-        return '/storage/images/' + this._cover;
+        return "/storage/images/" + this._cover;
     }
     public get coverName() {
-        return this._cover
+        return this._cover;
     }
     public get absCoverURI() {
-        return window.location.origin + '/storage/images/' + this._cover
+        return window.location.origin + "/storage/images/" + this._cover;
     }
 }
